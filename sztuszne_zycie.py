@@ -73,10 +73,12 @@ clock = pygame.time.Clock()
 pygame.display.set_caption('Game of life') #nazwa okna
 
 
-
 koza=Zwierze()
 apple = Roslina()
-
+stado=[]
+for i in range (random.randint(1,10)): #pętla wyznaczająca ilość osobników i dodająca ich do listy
+    stado.append(koza)
+    print("liczebność stada: ", len(stado))
 
 while True:
     for event in pygame.event.get():
@@ -85,31 +87,30 @@ while True:
             sys.exit()                  #
 
     screen.fill(GREEN) #maluje tło
-    apple1 = pygame.draw.rect(screen, RED, pygame.Rect(apple.poz_x, apple.poz_y, 10, 10)) # generuje jabłko
-    goat = pygame.draw.rect(screen, BLACK, pygame.Rect(koza.poz_x, koza.poz_y, 10, 10)) #generuje roślinożercę
+    for i in range(len(stado)):
+        apple1 = pygame.draw.rect(screen, RED, pygame.Rect(apple.poz_x, apple.poz_y, 10, 10)) # generuje jabłko
+        goat = pygame.draw.rect(screen, BLACK, pygame.Rect(stado().poz_x, stado().poz_y, 10, 10)) #generuje roślinożercę
 
-    if apple1.colliderect(goat): #zjadanie roślin przez kozy
-        koza.energia = koza.energia + apple.wartosc_energii
-        apple.kolizja()     #roślina znika
+        if apple1.colliderect(goat): #zjadanie roślin przez kozy
+            stado().energia = stado().energia + apple.wartosc_energii
+            apple.kolizja()     #roślina znika
 
-    koza.ruch()
+        koza.ruch()
 
-    odleglosc0 = odl(koza.poz_x, apple.poz_x, koza.poz_y, apple.poz_y) # porównuje odległość starej pozycji kozy z pozycją jabłka
-    odleglosc1 = odl(koza.poz_x1, apple.poz_x, koza.poz_y1, apple.poz_y) # porównuje odległość nowej pozycji kozy z pozycją jabłka
-    odleglosc = pkt_odleglosci(odleglosc0, odleglosc1)
-    print("odl 0 =", odleglosc0, "odl 1 =", odleglosc1)
+        odleglosc0 = odl(stado().poz_x, apple.poz_x, stado().poz_y, apple.poz_y) # porównuje odległość starej pozycji kozy z pozycją jabłka
+        odleglosc1 = odl(stado().poz_x1, apple[].poz_x, stado().poz_y1, apple.poz_y) # porównuje odległość nowej pozycji kozy z pozycją jabłka
+        odleglosc = pkt_odleglosci(odleglosc0, odleglosc1)
+        print("odl 0 =", odleglosc0, "odl 1 =", odleglosc1)
 
-    if odleglosc1<odleglosc0: #jeśli nowa odległość jest jest mniejsza niż stara, to koza się przesówa
-        koza.poz_x = koza.poz_x1
-        koza.poz_y = koza.poz_y1
-        koza.energia = koza.energia - odleglosc
-        print("Energia: " , koza.energia)
+        if odleglosc1<odleglosc0: #jeśli nowa odległość jest jest mniejsza niż stara, to koza się przesówa
+            stado().poz_x = stado().poz_x1
+            stado().poz_y = stado().poz_y1
+            stado().energia = stado().energia - odleglosc
+            print("Energia: " , stado().energia)
 
-        if koza.energia < 0: #jeśli energia zwierzęcia jest <0, zwierzę umiera
-            koza.goat_spawn = 0
-            print("KONIEC GRY")
-            pygame.quit()              #
-            sys.exit()
+            if stado().energia < 0: #jeśli energia zwierzęcia jest <0, zwierzę umiera
+                stado().goat_spawn = False
+
 
 
     #koza.ruch()
