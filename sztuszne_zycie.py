@@ -13,10 +13,12 @@ class Zwierze():
         self.poz_x=random.randrange(1, wx)
         self.poz_y=random.randrange(1, wy)
         self.goat_spawn = True
+        self.energia = random.randrange(0,500) #losuje początkowy poziom enerfii zwierzęcia
         print("poz 0:", self.poz_x,self.poz_y)
+
     def ruch(self):
-        smallOffset = random.randrange(-50,50)    # potrzebne, żeby roSlinożerca się przemieszczał
-        smallOffset1 = random.randrange(-50,50)   #
+        smallOffset = random.randrange(-10,10)    # potrzebne, żeby roSlinożerca się przemieszczał
+        smallOffset1 = random.randrange(-10,10)   #
         self.poz_x1 = self.poz_x+smallOffset1    # generuje nową pozycję roślinożercy
         self.poz_y1 = self.poz_y+smallOffset     #
         print("next position: ", self.poz_x1,self.poz_y1)
@@ -35,6 +37,7 @@ class Roslina():
         self.poz_x=random.randrange(1, wx)
         self.poz_y=random.randrange(1, wy)
         self.apple_spawn = True
+        self.watrosc_energii = 200 #punkty energii, które dodaje zjedzenie jabłka
 
     def kolizja(self):  #jeśli zwierze zje jabłko, to ono znika i pojawia się nowe
         self.apple_spawn = False #znika
@@ -52,6 +55,10 @@ def odl(poz_x1, poz_y1, poz_x2, poz_y2): #Funkcja służąca do wyznaczenia odle
     pierwiastek = math.sqrt(suma3) #
     return pierwiastek #
 
+def pkt_odleglosci(odl0, odl1):  #rylicza różnicę, między starą a nową pozyvją zwierzęcia
+    suma = odl0 - odl1           # różnica między tymi pozycjami jest odejmowana od punktów eneergii zwierzęcia
+    return suma                 #symuluje to zużywanie energii zwierzęcia
+
 pygame.init()
 wx = 500 #szerokość okna
 wy = 500 #wysokość okna
@@ -65,9 +72,12 @@ background = pygame.Surface((wx, wy))      # w sumie to nie wiem co robi i czy b
 clock = pygame.time.Clock()
 pygame.display.set_caption('Game of life') #nazwa okna
 
-#pygame.display.flip();
+
+
 koza=Zwierze()
 apple = Roslina()
+
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: #wyjście z gry
@@ -79,19 +89,30 @@ while True:
     goat = pygame.draw.rect(screen, BLACK, pygame.Rect(koza.poz_x, koza.poz_y, 10, 10)) #generuje roślinożercę
 
     if apple1.colliderect(goat): #zjadanie roślin przez kozy
+        koza.energia = koza.energia + apple.wartosc_energii
         apple.kolizja()     #roślina znika
 
     koza.ruch()
 
     odleglosc0 = odl(koza.poz_x, apple.poz_x, koza.poz_y, apple.poz_y) # porównuje odległość starej pozycji kozy z pozycją jabłka
     odleglosc1 = odl(koza.poz_x1, apple.poz_x, koza.poz_y1, apple.poz_y) # porównuje odległość nowej pozycji kozy z pozycją jabłka
+    odleglosc = pkt_odleglosci(odleglosc0, odleglosc1)
     print("odl 0 =", odleglosc0, "odl 1 =", odleglosc1)
+
     if odleglosc1<odleglosc0: #jeśli nowa odległość jest jest mniejsza niż stara, to koza się przesówa
         koza.poz_x = koza.poz_x1
         koza.poz_y = koza.poz_y1
+        koza.energia = koza.energia - odleglosc
+        print("Energia: " , koza.energia)
+
+        if koza.energia < 0: #jeśli energia zwierzęcia jest <0, zwierzę umiera
+            koza.goat_spawn = 0
+            print("KONIEC GRY")
+            pygame.quit()              #
+            sys.exit()
+
 
     #koza.ruch()
     pygame.display.update()
     pygame.display.flip()
-    clock.tick(2)
-
+    clock.tick(3)
