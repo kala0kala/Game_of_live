@@ -23,7 +23,7 @@ class Zwierze():
         self.poz_y1 = self.poz_y+smallOffset     #
         print("next position: ", self.poz_x1,self.poz_y1)
         if self.poz_x1 >= 480: #Zeby roślinożerca nie wyszedł poza planszę
-            self.poz_x1 = 10  # Ale chyba nie działa
+            self.poz_x1 = 10  #
         if self.poz_y1 >= 480: #
             self.poz_y1 = 10  #
         if self.poz_x1 <= 10:  #
@@ -92,8 +92,8 @@ while True:
         goat = pygame.draw.rect(screen, BLACK, pygame.Rect(lista_koz[i].poz_x, lista_koz[i].poz_y, 10, 10)) #generuje roślinożercę
 
     for i in range(len(lista_koz)):
-        if apple1.colliderect(goat): #zjadanie roślin przez kozy
-            lista_koz[i].energia = lista_koz[i].energia + apple.wartosc_energii
+        if apple1.colliderect(lista_koz[i]): #zjadanie roślin przez kozy
+            lista_koz[i].energia = lista_koz[i].energia + 200
             apple.kolizja()     #roślina znika
 
     for i in range(len(lista_koz)):
