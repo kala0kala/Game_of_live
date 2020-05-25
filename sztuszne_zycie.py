@@ -55,7 +55,7 @@ def odl(poz_x1, poz_x2, poz_y1, poz_y2): #Funkcja służąca do wyznaczenia odle
     pierwiastek = math.sqrt(suma3) #
     return pierwiastek #
 
-def pkt_odleglosci(odl0, odl1):  #rylicza różnicę, między starą a nową pozyvją zwierzęcia
+def pkt_odleglosci(odl0, odl1):  #wylicza różnicę, między starą a nową pozycją zwierzęcia
     suma = odl0 - odl1           # różnica między tymi pozycjami jest odejmowana od punktów eneergii zwierzęcia
     return suma                 #symuluje to zużywanie energii zwierzęcia
 
@@ -92,7 +92,7 @@ while True:
         goat = pygame.draw.rect(screen, BLACK, pygame.Rect(lista_koz[i].poz_x, lista_koz[i].poz_y, 10, 10)) #generuje roślinożercę
 
     for i in range(len(lista_koz)):
-        if apple1.colliderect(lista_koz[i]): #zjadanie roślin przez kozy
+        if apple1.colliderect( pygame.Rect(lista_koz[i].poz_x, lista_koz[i].poz_y, 10, 10)): #zjadanie roślin przez kozy
             lista_koz[i].energia = lista_koz[i].energia + 200
             apple.kolizja()     #roślina znika
 
@@ -107,7 +107,7 @@ while True:
         if odleglosc1<odleglosc0: #jeśli nowa odległość jest jest mniejsza niż stara, to koza się przesówa
             lista_koz[i].poz_x = lista_koz[i].poz_x1
             lista_koz[i].poz_y = lista_koz[i].poz_y1
-            lista_koz[i].energia =lista_koz[i].energia - odleglosc
+            lista_koz[i].energia = lista_koz[i].energia - odleglosc
             print("Energia: " , lista_koz[i].energia)
 
             if lista_koz[i].energia < 0: #jeśli energia zwierzęcia jest <0, zwierzę umiera = znika z planszy
