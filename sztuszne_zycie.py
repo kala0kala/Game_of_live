@@ -46,7 +46,7 @@ class Roslina():
             self.poz_y=random.randrange(1, wy) #
             self.apple_spawn = True # pojawia się
 
-def odl(poz_x1, poz_y1, poz_x2, poz_y2): #Funkcja służąca do wyznaczenia odległości, między dwoma punktami
+def odl(poz_x1, poz_x2, poz_y1, poz_y2): #Funkcja służąca do wyznaczenia odległości, między dwoma punktami
     sumax = poz_x1 - poz_x2 #
     sumay = poz_y1 - poz_y2 #
     suma1 = sumax*sumax #
