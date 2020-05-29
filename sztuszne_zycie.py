@@ -46,14 +46,14 @@ class Roslina():
         self.poz_y=random.randrange(1, wy)
         self.apple_spawn = True
         self.watrosc_energii = 50 #punkty energii, które dodaje zjedzenie jabłka
-        if self.poz_x >= 480: #Zeby roślina nie wyszła poza planszę
+        if self.poz_x >= 475: #Zeby roślina nie wyszła poza planszę
             self.poz_x = 10  #
-        if self.poz_y >= 480: #
+        if self.poz_y >= 475: #
             self.poz_y = 10  #
         if self.poz_x <= 10:  #
-            self.poz_x = 480 #
+            self.poz_x = 475 #
         if self.poz_y <= 10:  #
-            self.poz_y = 480 #
+            self.poz_y = 475 #
 
     def kolizja(self):  #jeśli zwierze zje jabłko, to ono znika i pojawia się nowe
         self.apple_spawn = False #znika
@@ -136,6 +136,13 @@ while True:
                 if lista_koz[i].energia < 0: #jeśli energia zwierzęcia jest <0, zwierzę umiera = znika z planszy
                     lista_koz[i].goat_spawn = False
 
+    for i in range(len(lista_koz)):
+        if lista_koz[i].energia >= 499: # moduł odpowiedzialny za rozmnażanie
+            nowy = Zwierze()                    #jeśli roślinożerca posiada więcej niż 499 pkt energii, rozmnaża się
+            nowy.energia = lista_koz[i].energia/2   # nowo powstały osobnik posiada o połowę mniej pkt życia niż ten, od którego pochodzi i pojawia się w odległości -10 pikseli od starszego
+            nowy.poz_x = lista_koz[i].poz_x - 10
+            nowy.poz_y = lista_koz[i].poz_y - 10
+            lista_koz.append(nowy)
 
 
     #koza.ruch()
